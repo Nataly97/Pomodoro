@@ -27,7 +27,7 @@ const estilos = StyleSheet.create({
     time: {
         fontSize: 60,
         fontWeight: 'bold',
-        color: '#333',
+        color: '#1a17c2',
         textAlign: 'center',
     },
 });

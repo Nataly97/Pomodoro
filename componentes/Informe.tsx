@@ -2,32 +2,32 @@ import { useState } from 'react';
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 export default function Informe() {
-    const [modalVisible, setModalVisible] = useState(false); // Guarda si la modal esta abierta o cerrada.
+    const [modalEstaVisible, establecerModalEstaVisible] = useState(false); // Guarda si la modal esta abierta o cerrada.
 
     return (
-        <View style={styles.container}>
+        <View style={estilos.contenedor}>
             <TouchableOpacity
-                style={styles.openButton}
-                onPress={() => setModalVisible(true)}
+                style={estilos.botonAbrir}
+                onPress={() => establecerModalEstaVisible(true)}
             >
-                <Text style={styles.openButtonText}>Informe</Text>
+                <Text style={estilos.textoBotonAbrir}>Informe</Text>
             </TouchableOpacity>
 
             <Modal
                 animationType="slide"
                 transparent={true}
-                visible={modalVisible}
-                onRequestClose={() => setModalVisible(false)}
+                visible={modalEstaVisible}
+                onRequestClose={() => establecerModalEstaVisible(false)}
             >
-                <View style={styles.modalBackground}>
-                    <View style={styles.modalContent}>
-                        <Text style={styles.modalTitle}>Resumen de la actividad</Text>
+                <View style={estilos.fondoModal}>
+                    <View style={estilos.contenidoModal}>
+                        <Text style={estilos.tituloModal}>Resumen de la actividad</Text>
 
                         <TouchableOpacity
-                            style={styles.closeButton}
-                            onPress={() => setModalVisible(false)}
+                            style={estilos.botonCerrar}
+                            onPress={() => establecerModalEstaVisible(false)}
                         >
-                            <Text style={styles.closeButtonText}>Cerrar</Text>
+                            <Text style={estilos.textoBotonCerrar}>Cerrar</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -36,46 +36,46 @@ export default function Informe() {
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
+const estilos = StyleSheet.create({
+    contenedor: {
         marginTop: 10,
     },
-    openButton: {
+    botonAbrir: {
         backgroundColor: '#1a17c2',
         borderRadius: 10,
         paddingHorizontal: 20,
         paddingVertical: 10,
     },
-    openButtonText: {
+    textoBotonAbrir: {
         color: 'white',
         fontWeight: 'bold',
     },
-    modalBackground: {
+    fondoModal: {
         flex: 1,
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         alignItems: 'center',
         justifyContent: 'center',
     },
-    modalContent: {
+    contenidoModal: {
         backgroundColor: 'white',
         borderRadius: 15,
         padding: 25,
         width: '80%',
         alignItems: 'center',
     },
-    modalTitle: {
+    tituloModal: {
         fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 20,
         textAlign: 'center',
     },
-    closeButton: {
+    botonCerrar: {
         backgroundColor: '#1a17c2',
         borderRadius: 10,
         paddingHorizontal: 20,
         paddingVertical: 10,
     },
-    closeButtonText: {
+    textoBotonCerrar: {
         color: 'white',
         fontWeight: 'bold',
     },

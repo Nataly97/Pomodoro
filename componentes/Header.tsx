@@ -3,81 +3,90 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 
 const opciones = ["Pomodoro", "Descanso Corto", "Descanso Largo"];
 
-interface HeaderProps {
-    setTime: React.Dispatch<React.SetStateAction<number>>;
-    currentTime: number;
-    setCurrentTime: React.Dispatch<React.SetStateAction<number>>;
-    setIsActive: React.Dispatch<React.SetStateAction<boolean>>;
+interface PropiedadesHeader {
+    establecerTiempo: React.Dispatch<React.SetStateAction<number>>;
+    tiempoActual: number;
+    establecerTiempoActual: React.Dispatch<React.SetStateAction<number>>;
+    establecerEstaActivo: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export default function Header({ setTime, currentTime, setCurrentTime, setIsActive }: HeaderProps) {
+export default function Header({ establecerTiempo, tiempoActual, establecerTiempoActual, establecerEstaActivo }: PropiedadesHeader) {
 
-    const [customTime, setCustomTime] = useState(''); // Guarda el tiempo escrito por el usuario.
+    // Guarda el tiempo escrito por el usuario.
+    const [tiempoPersonalizado, establecerTiempoPersonalizado] = useState(''); 
 
-    function handlePress(index: number): void {
+    function manejarPresion(indice: number): void {
         // Segun el boton presionado, se elige cuantos minutos debe durar el contador.
-        const newTime = (index === 0 ? 25 : (index === 1 ? 5 : 15));
+        const nuevoTiempo = (indice === 0 ? 25 : (indice === 1 ? 5 : 15));
 
-        // Marcamos cual boton esta seleccionado para cambiar el borde y el color de fondo.
-        setCurrentTime(index);
+        // Marca cual boton esta seleccionado para cambiar el borde y el color de fondo.
+        establecerTiempoActual(indice);
 
-        // Convertimos los minutos a segundos porque el reloj trabaja con segundos.
-        setTime(newTime * 60);
+        // Convierte los minutos a segundos porque el reloj trabaja con segundos.
+        establecerTiempo(nuevoTiempo * 60);
 
         // Al presionar cualquier boton, el reloj empieza la cuenta regresiva.
-        setIsActive(true);
+        establecerEstaActivo(true);
     }
 
-    function handleCustomTime(): void {
-        // Convertimos el texto escrito por el usuario a numero.
-        const minutes = Number(customTime);
+    function manejarTiempoPersonalizado(): void {
+        // Convierte el texto escrito por el usuario a numero.
+        const minutos = Number(tiempoPersonalizado);
 
-        // Si el usuario no escribe un numero valido, no iniciamos el reloj.
-        if (minutes <= 0) {
+        // Si el usuario no escribe un numero valido, no inicia el reloj.
+        if (minutos <= 0) {
             return;
         }
 
-        // Ponemos el tiempo personalizado en el reloj, tambien convertido a segundos.
-        setTime(minutes * 60);
+        // Pone el tiempo personalizado en el reloj.
+        establecerTiempo(minutos * 60);
 
-        // Usamos -1 para indicar que no esta seleccionado Pomodoro, descanso corto ni descanso largo.
-        setCurrentTime(-1);
+        // Usa -1 para indicar que no esta seleccionado Pomodoro, descanso corto ni descanso largo.
+        //Las opciones del arreglo 
+        establecerTiempoActual(-1);
 
         // Iniciamos la cuenta regresiva con el tiempo personalizado.
-        setIsActive(true);
+        establecerEstaActivo(true);
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.botones}>
-                {opciones.map((item, index) => (
-                    <TouchableOpacity key={index}
-                        onPress={() => handlePress(index)}
-                        style={[styles.itemStyle, currentTime !== index && { borderColor: "transparent" }]}>
-                        <Text style={{ fontWeight: 'bold' }}> {item} </Text>
+        // Contenedor principal del Header
+        <View style={estilos.contenedor}>
+            {/* Contenedor de los botones Pomodoro, Descanso Corto y Descanso Largo */}
+            <View style={estilos.botones}>
+                {/* Mapea las opciones y crea un boton para cada una. */}
+                {opciones.map((opcion, indice) => (
+                    // Cada boton tiene un estilo diferente si esta seleccionado o no.
+                    <TouchableOpacity key={indice}
+                        onPress={() => manejarPresion(indice)}
+                        style={[estilos.estiloOpcion, tiempoActual !== indice && { borderColor: "transparent" }]}>
+                        <Text style={{ fontWeight: 'bold' }}> {opcion} </Text>
                     </TouchableOpacity>
                 ))}
             </View>
 
-            <View style={styles.customContainer}>
+            {/* Contenedor del input y boton para iniciar el tiempo personalizado */}
+            <View style={estilos.contenedorPersonalizado}>
+                {/* Input para que el usuario escriba el tiempo personalizado en minutos. */}
                 <TextInput
-                    style={styles.input}
+                    style={estilos.entrada}
                     placeholder="Minutos"
                     keyboardType="numeric"
-                    value={customTime}
-                    onChangeText={setCustomTime}
+                    value={tiempoPersonalizado}
+                    onChangeText={establecerTiempoPersonalizado}
                 />
 
-                <TouchableOpacity onPress={handleCustomTime} style={styles.customButton}>
-                    <Text style={styles.customButtonText}>Iniciar</Text>
+                {/* Boton para iniciar el tiempo personalizado. */}
+                <TouchableOpacity onPress={manejarTiempoPersonalizado} style={estilos.botonPersonalizado}>
+                    <Text style={estilos.textoBotonPersonalizado}>Iniciar</Text>
                 </TouchableOpacity>
             </View>
         </View>
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
+const estilos = StyleSheet.create({
+    contenedor: {
         flexDirection: 'column',
         alignItems: 'center',
         marginTop: 10,
@@ -88,7 +97,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         width: '100%'
     },
-    itemStyle: {
+    estiloOpcion: {
         borderWidth: 3,
         padding: 5,
         flex: 1,
@@ -97,13 +106,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderColor: 'white',
     },
-    customContainer: {
+    contenedorPersonalizado: {
         flexDirection: 'row',
         marginTop: 15,
         width: '100%',
         paddingHorizontal: 15,
     },
-    input: {
+    entrada: {
         flex: 1,
         backgroundColor: 'white',
         borderRadius: 10,
@@ -111,14 +120,14 @@ const styles = StyleSheet.create({
         marginRight: 10,
         fontWeight: 'bold',
     },
-    customButton: {
+    botonPersonalizado: {
         backgroundColor: '#1a17c2',
         borderRadius: 10,
         paddingHorizontal: 15,
         justifyContent: 'center',
         alignItems: 'center',
     },
-    customButtonText: {
+    textoBotonPersonalizado: {
         color: 'white',
         fontWeight: 'bold',
     }

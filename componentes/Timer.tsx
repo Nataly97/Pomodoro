@@ -1,22 +1,22 @@
 import { StyleSheet, Text, View } from 'react-native';
 
-interface TimerProps {
-  time: number; // tiempo en segundos
+interface PropiedadesTimer {
+  tiempo: number; // tiempo en segundos
 }
 
-export default function Timer({ time }: TimerProps) {
+export default function Timer({ tiempo }: PropiedadesTimer) {
 
-    const FormatTiempo = `${Math.floor(time / 60).toString().padStart(2, '0')}:${(time % 60).toString().padStart(2, '0')}`;
+    const tiempoFormateado = `${Math.floor(tiempo / 60).toString().padStart(2, '0')}:${(tiempo % 60).toString().padStart(2, '0')}`;
 
     return (
-        <View style={estilos.timerContainer}>
-            <Text style={estilos.time}>{FormatTiempo}</Text>
+        <View style={estilos.contenedorTemporizador}>
+            <Text style={estilos.tiempo}>{tiempoFormateado}</Text>
         </View>
     );
 }
 
 const estilos = StyleSheet.create({
-    timerContainer: {
+    contenedorTemporizador: {
         alignItems: 'center',
         justifyContent: 'center',
         padding: 50,
@@ -24,7 +24,7 @@ const estilos = StyleSheet.create({
         backgroundColor: '#f0f0f0',
         marginBottom: 20
     },
-    time: {
+    tiempo: {
         fontSize: 60,
         fontWeight: 'bold',
         color: '#1a17c2',
